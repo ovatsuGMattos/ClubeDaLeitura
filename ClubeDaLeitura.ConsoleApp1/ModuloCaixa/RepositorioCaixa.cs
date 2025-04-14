@@ -1,38 +1,53 @@
-﻿namespace ClubeDaLeitura.ModuloCaixa;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-public class RepositorioCaixa
+namespace ClubeDaLeitura.ModuloCaixa
 {
-    private List<Caixa> caixas = new();
-    private int contadorId = 1;
-
-    public List<Caixa> SelecionarTodos() => caixas;
-
-    public Caixa SelecionarPorId(int id) =>
-        caixas.FirstOrDefault(c => c.Id == id)!;
-
-    public void Inserir(Caixa caixa)
+    public class RepositorioCaixa
     {
-        caixa.Id = contadorId++;
-        caixas.Add(caixa);
-    }
+        private List<Caixa> caixas;
 
-    public void Editar(Caixa caixaAtualizada)
-    {
-        var caixa = SelecionarPorId(caixaAtualizada.Id);
-        if (caixa != null)
+        public RepositorioCaixa()
         {
-            caixa.Etiqueta = caixaAtualizada.Etiqueta;
-            caixa.Cor = caixaAtualizada.Cor;
-            caixa.DiasEmprestimo = caixaAtualizada.DiasEmprestimo;
+            caixas = new List<Caixa>();
         }
-    }
 
-    public bool Excluir(int id)
-    {
-        var caixa = SelecionarPorId(id);
-        if (caixa == null || caixa.Revistas.Any())
-            return false;
+        public void Adicionar(Caixa caixa)
+        {
+            caixas.Add(caixa);
+        }
 
-        return caixas.Remove(caixa);
+        public void Editar(int id, Caixa caixaAtualizada)
+        {
+            var caixa = caixas.FirstOrDefault(c => c.Id == id);
+            if (caixa != null)
+            {
+                caixa.Etiqueta = caixaAtualizada.Etiqueta;
+                caixa.Cor = caixaAtualizada.Cor;
+                caixa.DiasEmprestimo = caixaAtualizada.DiasEmprestimo;
+            }
+        }
+
+        public void Excluir(int id)
+        {
+            var caixa = caixas.FirstOrDefault(c => c.Id == id);
+            if (caixa != null)
+                caixas.Remove(caixa);
+        }
+
+        public List<Caixa> ObterTodos()
+        {
+            return caixas;
+        }
+
+        public Caixa ObterPorId(int id)
+        {
+            return caixas.FirstOrDefault(c => c.Id == id)!;
+        }
+
+        public bool VerificarEtiquetaDuplicada(string etiqueta)
+        {
+            return caixas.Any(c => c.Etiqueta == etiqueta);
+        }
     }
 }

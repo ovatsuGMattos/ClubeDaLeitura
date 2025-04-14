@@ -1,36 +1,53 @@
-﻿public class RepositorioAmigo
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace ClubeDaLeitura.ModuloAmigo
 {
-    private List<Amigo> amigos = new();
-    private int contadorId = 1;
-
-    public List<Amigo> SelecionarTodos() => amigos;
-
-    public Amigo SelecionarPorId(int id) =>
-        amigos.FirstOrDefault(a => a.Id == id)!;
-
-    public void Inserir(Amigo amigo)
+    public class RepositorioAmigo
     {
-        amigo.Id = contadorId++;
-        amigos.Add(amigo);
-    }
+        private List<Amigo> amigos;
 
-    public void Editar(Amigo amigoAtualizado)
-    {
-        var amigo = SelecionarPorId(amigoAtualizado.Id);
-        if (amigo != null)
+        public RepositorioAmigo()
         {
-            amigo.Nome = amigoAtualizado.Nome;
-            amigo.NomeResponsavel = amigoAtualizado.NomeResponsavel;
-            amigo.Telefone = amigoAtualizado.Telefone;
+            amigos = new List<Amigo>();
         }
-    }
 
-    public bool Excluir(int id)
-    {
-        var amigo = SelecionarPorId(id);
-        if (amigo == null || amigo.Emprestimos.Any())
-            return false;
+        public void Adicionar(Amigo amigo)
+        {
+            amigos.Add(amigo);
+        }
 
-        return amigos.Remove(amigo);
+        public void Editar(int id, Amigo amigoAtualizado)
+        {
+            var amigo = amigos.FirstOrDefault(a => a.Id == id);
+            if (amigo != null)
+            {
+                amigo.Nome = amigoAtualizado.Nome;
+                amigo.NomeResponsavel = amigoAtualizado.NomeResponsavel;
+                amigo.Telefone = amigoAtualizado.Telefone;
+            }
+        }
+
+        public void Excluir(int id)
+        {
+            var amigo = amigos.FirstOrDefault(a => a.Id == id);
+            if (amigo != null)
+                amigos.Remove(amigo);
+        }
+
+        public List<Amigo> ObterTodos()
+        {
+            return amigos;
+        }
+
+        public Amigo ObterPorId(int id)
+        {
+            return amigos.FirstOrDefault(a => a.Id == id)!;
+        }
+
+        public bool VerificarSeExiste(string nome, string telefone)
+        {
+            return amigos.Any(a => a.Nome == nome && a.Telefone == telefone);
+        }
     }
 }

@@ -1,24 +1,24 @@
 ﻿using ClubeDaLeitura.ModuloCaixa;
 
-namespace ClubeDaLeitura.ConsoleApp1.ModuloRevista;
-
-public enum StatusRevista
+namespace ClubeDaLeitura.ModuloRevista
 {
-    Disponivel,
-    Emprestada,
-    Reservada
-}
-public class Revista
-{
-    public int Id { get; set; }
-    public string Titulo { get; set; }
-    public int NumeroEdicao { get; set; }
-    public int Ano { get; set; }
-    public Caixa Caixa { get; set; }
-    public StatusRevista Status { get; set; } = StatusRevista.Disponivel;
-
-    public override string ToString()
+    public class Revista : ClubeDaLeitura.ConsoleApp1.Compartilhada.EntidadeBase
     {
-        return $"{Id}. {Titulo} - Edição {NumeroEdicao} ({Ano}) | Caixa: {Caixa?.Etiqueta} | Status: {Status}";
+        public string Titulo { get; set; }
+        public int Edicao { get; set; }
+        public int AnoPublicacao { get; set; }
+        public Caixa Caixa { get; set; } 
+        public string Status { get; set; } 
+        public object NumeroEdicao { get; internal set; }
+        public int Ano { get; internal set; }
+
+        public Revista(string titulo, int edicao, int anoPublicacao, Caixa caixa)
+        {
+            Titulo = titulo;
+            Edicao = edicao;
+            AnoPublicacao = anoPublicacao;
+            Caixa = caixa;
+            Status = "Disponível"; 
+        }
     }
 }

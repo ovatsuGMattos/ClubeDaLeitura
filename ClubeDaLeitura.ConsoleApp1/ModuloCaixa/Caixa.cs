@@ -1,16 +1,16 @@
-﻿namespace ClubeDaLeitura.ModuloCaixa;
-
-public class Caixa
+﻿namespace ClubeDaLeitura.ModuloCaixa
 {
-    public int Id { get; set; }
-    public string Etiqueta { get; set; }
-    public string Cor { get; set; }
-    public int DiasEmprestimo { get; set; } = 7;
-
-    public List<Revista> Revistas { get; set; } = new();
-
-    public override string ToString()
+    public class Caixa : ClubeDaLeitura.ConsoleApp1.Compartilhada.EntidadeBase
     {
-        return $"{Id}. Etiqueta: {Etiqueta} | Cor: {Cor} | Dias Empréstimo: {DiasEmprestimo}";
+        public string Etiqueta { get; set; }
+        public string Cor { get; set; }
+        public int DiasEmprestimo { get; set; }
+
+        public Caixa(string etiqueta, string cor, int diasEmprestimo)
+        {
+            Etiqueta = etiqueta;
+            Cor = cor;
+            DiasEmprestimo = diasEmprestimo;
+        }
     }
 }

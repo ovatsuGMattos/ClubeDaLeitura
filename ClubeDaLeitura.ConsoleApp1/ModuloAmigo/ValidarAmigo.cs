@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using ClubeDaLeitura.ModuloAmigo;
+using System.Text.RegularExpressions;
 
 public class ValidadorAmigo
 {

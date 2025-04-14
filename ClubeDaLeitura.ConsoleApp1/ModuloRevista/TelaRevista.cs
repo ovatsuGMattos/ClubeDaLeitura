@@ -1,111 +1,123 @@
 ﻿using ClubeDaLeitura.ModuloCaixa;
+using System;
 
-namespace ClubeDaLeitura.ConsoleApp1.ModuloRevista;
-
-public class TelaRevista
+namespace ClubeDaLeitura.ModuloRevista
 {
-    private RepositorioRevista repositorio;
-    private RepositorioCaixa repositorioCaixa;
-
-    public TelaRevista(RepositorioRevista repositorio, RepositorioCaixa repositorioCaixa)
+    public class TelaRevista : ClubeDaLeitura.ConsoleApp1.Compartilhada.TelaBase
     {
-        this.repositorio = repositorio;
-        this.repositorioCaixa = repositorioCaixa;
-    }
-    public void Inserir()
-    {
-        var revista = ObterDadosRevista();
-        var erros = ValidadorRevista.Validar(revista, repositorio.SelecionarTodos());
+        private readonly RepositorioRevista repositorioRevista;
+        private readonly RepositorioCaixa repositorioCaixa;
 
-        if (erros.Any())
+        public TelaRevista(RepositorioRevista repositorioRevista, RepositorioCaixa repositorioCaixa)
         {
-            MostrarErros(erros);
-            return;
+            this.repositorioRevista = repositorioRevista;
+            this.repositorioCaixa = repositorioCaixa;
         }
 
-        repositorio.Inserir(revista);
-        revista.Caixa.Revistas.Add(revista);
-        Console.WriteLine("Revista cadastrada com sucesso!");
-    }
-
-    public void Editar()
-    {
-        Visualizar();
-
-        Console.Write("Informe o ID da revista para editar: ");
-        int id = int.Parse(Console.ReadLine()!);
-
-        var revistaAtualizada = ObterDadosRevista();
-        revistaAtualizada.Id = id;
-
-        var erros = ValidadorRevista.Validar(revistaAtualizada, repositorio.SelecionarTodos());
-
-        if (erros.Any())
+        public override void Cadastrar()
         {
-            MostrarErros(erros);
-            return;
+            Console.WriteLine("Cadastro de Revista:");
+
+            Console.Write("Título: ");
+            string titulo = Console.ReadLine()!;
+
+            Console.Write("Número da Edição: ");
+            int edicao = int.Parse(Console.ReadLine()!);
+
+            if (repositorioRevista.VerificarTituloEdicaoDuplicado(titulo, edicao))
+            {
+                Console.WriteLine("Já existe uma revista com esse título e edição.");
+                return;
+            }
+
+            Console.Write("Ano de Publicação: ");
+            int anoPublicacao = int.Parse(Console.ReadLine()!);
+
+            Console.WriteLine("Selecione a Caixa:");
+            var caixas = repositorioCaixa.ObterTodos();
+            for (int i = 0; i < caixas.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} - {caixas[i].Etiqueta}");
+            }
+            int idCaixa = int.Parse(Console.ReadLine()!) - 1;
+
+            Caixa caixaSelecionada = caixas[idCaixa];
+
+            Revista novaRevista = new Revista(titulo, edicao, anoPublicacao, caixaSelecionada);
+            repositorioRevista.Adicionar(novaRevista);
+
+            Console.WriteLine("Revista cadastrada com sucesso!");
         }
 
-        repositorio.Editar(revistaAtualizada);
-        Console.WriteLine("Revista editada com sucesso!");
-    }
-
-    public void Excluir()
-    {
-        Visualizar();
-
-        Console.Write("\nInforme o ID da revista para excluir: ");
-        int id = int.Parse(Console.ReadLine()!);
-
-        repositorio.Excluir(id);
-        Console.WriteLine("Revista excluída com sucesso!");
-    }
-    public void Visualizar()
-    {
-        Console.WriteLine("Lista de revistas cadastradas:\n");
-
-        var revistas = repositorio.SelecionarTodos();
-        if (revistas.Count == 0)
+        public override void Editar()
         {
-            Console.WriteLine("Nenhuma revista cadastrada.");
-            return;
+            Console.Write("Digite o ID da revista a ser editada: ");
+            int id = int.Parse(Console.ReadLine()!);
+
+            Revista revista = repositorioRevista.ObterPorId(id);
+
+            if (revista == null)
+            {
+                Console.WriteLine("Revista não encontrada.");
+                return;
+            }
+
+            Console.Write("Novo título: ");
+            revista.Titulo = Console.ReadLine()!;
+
+            Console.Write("Nova edição: ");
+            revista.Edicao = int.Parse(Console.ReadLine()!);
+
+            Console.Write("Novo ano de publicação: ");
+            revista.AnoPublicacao = int.Parse(Console.ReadLine()!);
+
+            Console.WriteLine("Selecione a nova caixa:");
+            var caixas = repositorioCaixa.ObterTodos();
+            for (int i = 0; i < caixas.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} - {caixas[i].Etiqueta}");
+            }
+            int idCaixa = int.Parse(Console.ReadLine()!) - 1;
+
+            revista.Caixa = caixas[idCaixa];
+
+            repositorioRevista.Editar(id, revista);
+
+            Console.WriteLine("Revista atualizada com sucesso!");
         }
 
-        foreach (var revista in revistas)
-            Console.WriteLine(revista);
-    }
-    private Revista ObterDadosRevista()
-    {
-        Console.Write("Título (2 a 100 caracteres): ");
-        string titulo = Console.ReadLine()!;
-
-        Console.Write("Número da edição: ");
-        int edicao = int.Parse(Console.ReadLine()!);
-
-        Console.Write("Ano de publicação: ");
-        int ano = int.Parse(Console.ReadLine()!);
-
-        Console.WriteLine("\nCaixas disponíveis:");
-        var caixas = repositorioCaixa.SelecionarTodos();
-        foreach (var caixa in caixas)
-            Console.WriteLine($"{caixa.Id} - {caixa.Etiqueta}");
-
-        Console.Write("Escolha o ID da caixa: ");
-        int idCaixa = int.Parse(Console.ReadLine()!);
-        var caixaSelecionada = repositorioCaixa.SelecionarPorId(idCaixa);
-
-        return new Revista
+        public override void Excluir()
         {
-            Titulo = titulo,
-            NumeroEdicao = edicao,
-            Ano = ano,
-            Caixa = caixaSelecionada
-        };
-    }
-    private void MostrarErros(List<string> erros)
-    {
-        Console.WriteLine("Erros encontrados:");
-        foreach (var erro in erros)
-            Console.WriteLine($"- {erro}");
+            Console.Write("Digite o ID da revista a ser excluída: ");
+            int id = int.Parse(Console.ReadLine()!);
+
+            Revista revista = repositorioRevista.ObterPorId(id);
+
+            if (revista == null)
+            {
+                Console.WriteLine("Revista não encontrada.");
+                return;
+            }
+
+            repositorioRevista.Excluir(id);
+            Console.WriteLine("Revista excluída com sucesso!");
+        }
+
+        public override void Visualizar()
+        {
+            Console.WriteLine("== Lista de Revistas ==");
+            var revistas = repositorioRevista.ObterTodos();
+
+            if (revistas.Count == 0)
+            {
+                Console.WriteLine("Nenhuma revista cadastrada.");
+                return;
+            }
+
+            foreach (var revista in revistas)
+            {
+                Console.WriteLine($"ID: {revista.Id} - Título: {revista.Titulo} - Edição: {revista.Edicao} - Ano: {revista.AnoPublicacao} - Status: {revista.Status} - Caixa: {revista.Caixa.Etiqueta}");
+            }
+        }
     }
 }
