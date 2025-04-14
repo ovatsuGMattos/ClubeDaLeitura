@@ -1,6 +1,8 @@
-﻿namespace ClubeDaLeitura.ModuloAmigo
+﻿using ClubeDaLeitura.ConsoleApp1.Compartilhada;
+
+namespace ClubeDaLeitura.ModuloAmigo
 {
-    public class Amigo : ClubeDaLeitura.ConsoleApp1.Compartilhada.EntidadeBase
+    public class Amigo : EntidadeBase
     {
         public string Nome { get; set; }
         public string NomeResponsavel { get; set; }

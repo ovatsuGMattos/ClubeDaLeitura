@@ -61,7 +61,7 @@ namespace ClubeDaLeitura.ModuloAmigo
             Console.WriteLine("Amigo atualizado com sucesso!");
         }
 
-        public override void Excluir(RepositorioEmprestimo repositorioEmprestimo)
+        public override void Excluir()
         {
             Console.Write("Digite o ID do amigo a ser excluído: ");
             int id = int.Parse(Console.ReadLine()!);
@@ -77,12 +77,6 @@ namespace ClubeDaLeitura.ModuloAmigo
             repositorioAmigo.Excluir(id);
             Console.WriteLine("Amigo excluído com sucesso!");
         }
-
-        public override void Excluir()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Visualizar()
         {
             Console.WriteLine("== Lista de Amigos ==");

@@ -59,7 +59,7 @@ namespace ClubeDaLeitura.ModuloCaixa
             Console.WriteLine("Caixa atualizada com sucesso!");
         }
 
-        public override void Excluir(ModuloRevista.RepositorioRevista repositorioRevista)
+        public override void Excluir()
         {
             Console.Write("Digite o ID da caixa a ser excluída: ");
             int id = int.Parse(Console.ReadLine()!);

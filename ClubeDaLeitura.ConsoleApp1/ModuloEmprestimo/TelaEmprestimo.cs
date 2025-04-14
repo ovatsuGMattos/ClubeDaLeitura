@@ -97,7 +97,7 @@ namespace ClubeDaLeitura.ModuloEmprestimo
             Console.WriteLine("Empréstimo devolvido e status atualizado para 'Concluído'.");
         }
 
-        public override void Visualizar(bool v)
+        public override void Visualizar()
         {
             Console.WriteLine("== Lista de Empréstimos ==");
             var emprestimos = repositorioEmprestimo.ObterTodos();
@@ -111,28 +111,6 @@ namespace ClubeDaLeitura.ModuloEmprestimo
             foreach (var emprestimo in emprestimos)
             {
                 Console.WriteLine($"ID: {emprestimo.Id} | Amigo: {emprestimo.Amigo.Nome} | Revista: {emprestimo.Revista.Titulo} | Status: {emprestimo.Status} | Data Empréstimo: {emprestimo.DataEmprestimo:dd/MM/yyyy} | Data Devolução: {emprestimo.DataDevolucao:dd/MM/yyyy}");
-            }
-        }
-
-        public override void Visualizar()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void VisualizarEmprestimosAtrasados()
-        {
-            Console.WriteLine("== Empréstimos Atrasados ==");
-            var emprestimosAtrasados = repositorioEmprestimo.ObterTodos().Where(e => e.Status == "Aberto" && e.DataDevolucao < DateTime.Now).ToList();
-
-            if (!emprestimosAtrasados.Any())
-            {
-                Console.WriteLine("Nenhum empréstimo atrasado.");
-                return;
-            }
-
-            foreach (var emprestimo in emprestimosAtrasados)
-            {
-                Console.WriteLine($"ID: {emprestimo.Id} | Amigo: {emprestimo.Amigo.Nome} | Revista: {emprestimo.Revista.Titulo} | Data Empréstimo: {emprestimo.DataEmprestimo:dd/MM/yyyy} | Data Devolução: {emprestimo.DataDevolucao:dd/MM/yyyy} (Atrasado)");
             }
         }
 
