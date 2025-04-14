@@ -1,57 +1,81 @@
-﻿namespace ClubeDaLeitura.ConsoleApp1
+﻿
+using ClubeDaLeitura.ModuloCaixa;
+
+RepositorioCaixa repositorioCaixa = new();
+TelaCaixa telaCaixa = new(repositorioCaixa);
+
+while (true)
 {
-    internal class Program
+    Console.Clear();
+    Console.WriteLine("==== Clube da Leitura ====");
+    Console.WriteLine("1 - Módulo de Amigos");
+    Console.WriteLine("2 - Módulo de Caixas");
+    Console.WriteLine("0 - Sair");
+    Console.Write("Escolha uma opção: ");
+
+    string opcao = Console.ReadLine()!;
+    Console.Clear();
+
+    switch (opcao)
     {
-        static void Main(string[] args)
-        {
-            RepositorioAmigo repositorioAmigo = new();
-            TelaAmigo telaAmigo = new(repositorioAmigo);
-
-            while (true)
-            {
-                Console.Clear();
-                Console.WriteLine("==== Clube da Leitura ====");
-                Console.WriteLine("1 - Inserir amigo");
-                Console.WriteLine("2 - Editar amigo");
-                Console.WriteLine("3 - Excluir amigo");
-                Console.WriteLine("4 - Visualizar amigos");
-                Console.WriteLine("5 - Visualizar empréstimos do amigo");
-                Console.WriteLine("0 - Sair");
-                Console.Write("Escolha uma opção: ");
-
-                string opcao = Console.ReadLine()!;
-
-                Console.Clear();
-
-                switch (opcao)
-                {
-                    case "1":
-                        telaAmigo.Inserir();
-                        break;
-                    case "2":
-                        telaAmigo.Editar();
-                        break;
-                    case "3":
-                        telaAmigo.Excluir();
-                        break;
-                    case "4":
-                        telaAmigo.Visualizar();
-                        break;
-                    case "5":
-                        telaAmigo.VisualizarEmprestimos();
-                        break;
-                    case "0":
-                        Console.WriteLine("Encerrando o programa...");
-                        return;
-                    default:
-                        Console.WriteLine("Opção inválida. Tente novamente.");
-                        break;
-                }
-
-                Console.WriteLine("\nPressione qualquer tecla para continuar...");
-                Console.ReadKey();
-            }
-        }
+        case "1":
+            MenuAmigos(telaAmigo); 
+            break;
+        case "2":
+            MenuCaixas(telaCaixa);
+            break;
+        case "0":
+            Console.WriteLine("Encerrando o programa...");
+            return;
+        default:
+            Console.WriteLine("Opção inválida. Tente novamente.");
+            break;
     }
 
+    Console.WriteLine("\nPressione qualquer tecla para continuar...");
+    Console.ReadKey();
+}
+
+static void MenuAmigos(TelaAmigo telaAmigo)
+{
+    Console.WriteLine("== Módulo de Amigos ==");
+    Console.WriteLine("1 - Inserir");
+    Console.WriteLine("2 - Editar");
+    Console.WriteLine("3 - Excluir");
+    Console.WriteLine("4 - Visualizar");
+    Console.WriteLine("5 - Ver empréstimos do amigo");
+    Console.Write("Opção: ");
+    string opcao = Console.ReadLine()!;
+
+    Console.Clear();
+    switch (opcao)
+    {
+        case "1": telaAmigo.Inserir(); break;
+        case "2": telaAmigo.Editar(); break;
+        case "3": telaAmigo.Excluir(); break;
+        case "4": telaAmigo.Visualizar(); break;
+        case "5": telaAmigo.VisualizarEmprestimos(); break;
+        default: Console.WriteLine("Opção inválida."); break;
+    }
+}
+
+static void MenuCaixas(TelaCaixa telaCaixa)
+{
+    Console.WriteLine("== Módulo de Caixas ==");
+    Console.WriteLine("1 - Inserir");
+    Console.WriteLine("2 - Editar");
+    Console.WriteLine("3 - Excluir");
+    Console.WriteLine("4 - Visualizar");
+    Console.Write("Opção: ");
+    string opcao = Console.ReadLine()!;
+
+    Console.Clear();
+    switch (opcao)
+    {
+        case "1": telaCaixa.Inserir(); break;
+        case "2": telaCaixa.Editar(); break;
+        case "3": telaCaixa.Excluir(); break;
+        case "4": telaCaixa.Visualizar(); break;
+        default: Console.WriteLine("Opção inválida."); break;
+    }
 }
