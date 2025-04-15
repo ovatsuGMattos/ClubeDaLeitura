@@ -2,6 +2,8 @@
 using ClubeDaLeitura.ModuloCaixa;
 using ClubeDaLeitura.ModuloRevista;
 using ClubeDaLeitura.ModuloEmprestimo;
+using ClubeDaLeitura.ConsoleApp.ModuloMulta;
+using ClubeDaLeitura.ConsoleApp.Telas;
 
 namespace ClubeDaLeitura
 {
@@ -13,11 +15,13 @@ namespace ClubeDaLeitura
             RepositorioCaixa repositorioCaixa = new RepositorioCaixa();
             RepositorioRevista repositorioRevista = new RepositorioRevista();
             RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
+            RepositorioMulta repositorioMulta = new RepositorioMulta();
 
             TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
             TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
             TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
             TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista);
+            TelaMulta telaMulta = new TelaMulta(repositorioMulta);
 
             while (true)
             {
@@ -27,7 +31,8 @@ namespace ClubeDaLeitura
                 Console.WriteLine("2. Módulo de Caixas");
                 Console.WriteLine("3. Módulo de Revistas");
                 Console.WriteLine("4. Módulo de Empréstimos");
-                Console.WriteLine("5. Sair");
+                Console.WriteLine("5. Módulo de Multas");
+                Console.WriteLine("6. Sair");
                 Console.Write("Escolha uma opção: ");
                 string opcao = Console.ReadLine()!;
 
@@ -50,6 +55,10 @@ namespace ClubeDaLeitura
                         break;
 
                     case "5":
+                        MenuMultas(telaMulta);
+                        break;
+
+                    case "6":
                         Console.WriteLine("Saindo...");
                         return;
 
@@ -101,6 +110,7 @@ namespace ClubeDaLeitura
                 }
             }
         }
+
         static void MenuCaixas(TelaCaixa telaCaixa)
         {
             while (true)
@@ -183,6 +193,7 @@ namespace ClubeDaLeitura
                 }
             }
         }
+
         static void MenuEmprestimos(TelaEmprestimo telaEmprestimo)
         {
             while (true)
@@ -211,6 +222,48 @@ namespace ClubeDaLeitura
                         break;
 
                     case "4":
+                        return;
+
+                    default:
+                        Console.WriteLine("Opção inválida, tente novamente.");
+                        break;
+                }
+            }
+        }
+
+        static void MenuMultas(TelaMulta telaMulta)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("=== Módulo de Multas ===");
+                Console.WriteLine("1. Visualizar Todas");
+                Console.WriteLine("2. Visualizar Pendentes");
+                Console.WriteLine("3. Visualizar Por Amigo");
+                Console.WriteLine("4. Quitar Multa");
+                Console.WriteLine("5. Voltar");
+                Console.Write("Escolha uma opção: ");
+                string opcao = Console.ReadLine()!;
+
+                switch (opcao)
+                {
+                    case "1":
+                        telaMulta.VisualizarTodas();
+                        break;
+
+                    case "2":
+                        telaMulta.VisualizarPendentes();
+                        break;
+
+                    case "3":
+                        telaMulta.VisualizarPorAmigo();
+                        break;
+
+                    case "4":
+                        telaMulta.QuitarMulta();
+                        break;
+
+                    case "5":
                         return;
 
                     default:
