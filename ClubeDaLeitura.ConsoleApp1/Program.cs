@@ -1,9 +1,11 @@
 ﻿using ClubeDaLeitura.ModuloAmigo;
+using ClubeDaLeitura.ModuloReserva;
 using ClubeDaLeitura.ModuloCaixa;
 using ClubeDaLeitura.ModuloRevista;
 using ClubeDaLeitura.ModuloEmprestimo;
 using ClubeDaLeitura.ConsoleApp.ModuloMulta;
 using ClubeDaLeitura.ConsoleApp.Telas;
+
 
 namespace ClubeDaLeitura
 {
@@ -16,12 +18,14 @@ namespace ClubeDaLeitura
             RepositorioRevista repositorioRevista = new RepositorioRevista();
             RepositorioEmprestimo repositorioEmprestimo = new RepositorioEmprestimo();
             RepositorioMulta repositorioMulta = new RepositorioMulta();
+            RepositorioReserva repositorioReserva = new RepositorioReserva();
 
             TelaAmigo telaAmigo = new TelaAmigo(repositorioAmigo);
             TelaCaixa telaCaixa = new TelaCaixa(repositorioCaixa);
             TelaRevista telaRevista = new TelaRevista(repositorioRevista, repositorioCaixa);
             TelaEmprestimo telaEmprestimo = new TelaEmprestimo(repositorioEmprestimo, repositorioAmigo, repositorioRevista);
             TelaMulta telaMulta = new TelaMulta(repositorioMulta);
+            TelaReserva telaReserva = new TelaReserva(repositorioReserva, repositorioAmigo, repositorioRevista);
 
             while (true)
             {
@@ -32,7 +36,8 @@ namespace ClubeDaLeitura
                 Console.WriteLine("3. Módulo de Revistas");
                 Console.WriteLine("4. Módulo de Empréstimos");
                 Console.WriteLine("5. Módulo de Multas");
-                Console.WriteLine("6. Sair");
+                Console.WriteLine("6. Módulo de Reservas");
+                Console.WriteLine("7. Sair");
                 Console.Write("Escolha uma opção: ");
                 string opcao = Console.ReadLine()!;
 
@@ -41,27 +46,24 @@ namespace ClubeDaLeitura
                     case "1":
                         MenuAmigos(telaAmigo);
                         break;
-
                     case "2":
                         MenuCaixas(telaCaixa);
                         break;
-
                     case "3":
                         MenuRevistas(telaRevista);
                         break;
-
                     case "4":
                         MenuEmprestimos(telaEmprestimo);
                         break;
-
                     case "5":
                         MenuMultas(telaMulta);
                         break;
-
                     case "6":
+                        MenuReservas(telaReserva);
+                        break;
+                    case "7":
                         Console.WriteLine("Saindo...");
                         return;
-
                     default:
                         Console.WriteLine("Opção inválida, tente novamente.");
                         break;
@@ -88,22 +90,17 @@ namespace ClubeDaLeitura
                     case "1":
                         telaAmigo.Cadastrar();
                         break;
-
                     case "2":
                         telaAmigo.Editar();
                         break;
-
                     case "3":
                         telaAmigo.Excluir();
                         break;
-
                     case "4":
                         telaAmigo.Visualizar();
                         break;
-
                     case "5":
                         return;
-
                     default:
                         Console.WriteLine("Opção inválida, tente novamente.");
                         break;
@@ -130,28 +127,24 @@ namespace ClubeDaLeitura
                     case "1":
                         telaCaixa.Cadastrar();
                         break;
-
                     case "2":
                         telaCaixa.Editar();
                         break;
-
                     case "3":
                         telaCaixa.Excluir();
                         break;
-
                     case "4":
                         telaCaixa.Visualizar();
                         break;
-
                     case "5":
                         return;
-
                     default:
                         Console.WriteLine("Opção inválida, tente novamente.");
                         break;
                 }
             }
         }
+
         static void MenuRevistas(TelaRevista telaRevista)
         {
             while (true)
@@ -171,22 +164,17 @@ namespace ClubeDaLeitura
                     case "1":
                         telaRevista.Cadastrar();
                         break;
-
                     case "2":
                         telaRevista.Editar();
                         break;
-
                     case "3":
                         telaRevista.Excluir();
                         break;
-
                     case "4":
                         telaRevista.Visualizar();
                         break;
-
                     case "5":
                         return;
-
                     default:
                         Console.WriteLine("Opção inválida, tente novamente.");
                         break;
@@ -212,18 +200,14 @@ namespace ClubeDaLeitura
                     case "1":
                         telaEmprestimo.Cadastrar();
                         break;
-
                     case "2":
                         telaEmprestimo.Excluir();
                         break;
-
                     case "3":
                         telaEmprestimo.Visualizar();
                         break;
-
                     case "4":
                         return;
-
                     default:
                         Console.WriteLine("Opção inválida, tente novamente.");
                         break;
@@ -250,27 +234,56 @@ namespace ClubeDaLeitura
                     case "1":
                         telaMulta.VisualizarTodas();
                         break;
-
                     case "2":
                         telaMulta.VisualizarPendentes();
                         break;
-
                     case "3":
                         telaMulta.VisualizarPorAmigo();
                         break;
-
                     case "4":
                         telaMulta.QuitarMulta();
                         break;
-
                     case "5":
                         return;
-
                     default:
                         Console.WriteLine("Opção inválida, tente novamente.");
                         break;
                 }
             }
         }
+
+        static void MenuReservas(TelaReserva telaReserva)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("=== Módulo de Reservas ===");
+                Console.WriteLine("1. Criar Reserva");
+                Console.WriteLine("2. Cancelar Reserva");
+                Console.WriteLine("3. Visualizar Reservas Ativas");
+                Console.WriteLine("4. Converter Reserva em Empréstimo");
+                Console.WriteLine("5. Voltar");
+                Console.Write("Escolha uma opção: ");
+                string opcao = Console.ReadLine()!;
+
+                switch (opcao)
+                {
+                    case "1":
+                        telaReserva.CadastrarReserva();
+                        break;
+                    case "2":
+                        telaReserva.Cancelar();
+                        break;
+                    case "3":
+                        telaReserva.VisualizarAtivas();
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida, tente novamente.");
+                        break;
+                }
+            }
+
+        }
     }
 }
+

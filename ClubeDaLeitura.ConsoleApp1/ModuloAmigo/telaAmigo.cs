@@ -1,10 +1,9 @@
 ﻿using ClubeDaLeitura.ModuloEmprestimo;
-using System;
-using System.Linq;
+using ClubeDaLeitura.ConsoleApp1.Compartilhada;
 
 namespace ClubeDaLeitura.ModuloAmigo
 {
-    public class TelaAmigo : ClubeDaLeitura.ConsoleApp1.Compartilhada.TelaBase
+    public class TelaAmigo : TelaBase
     {
         private readonly RepositorioAmigo repositorioAmigo;
 

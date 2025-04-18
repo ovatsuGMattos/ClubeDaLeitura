@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ClubeDaLeitura.ConsoleApp1.Compartilhada;
 
 namespace ClubeDaLeitura.ModuloCaixa
 {
-    public class TelaCaixa : ClubeDaLeitura.ConsoleApp1.Compartilhada.TelaBase
+    public class TelaCaixa : TelaBase
     {
         private readonly RepositorioCaixa repositorioCaixa;
 
