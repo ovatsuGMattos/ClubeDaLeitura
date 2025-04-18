@@ -1,9 +1,10 @@
 ﻿using ClubeDaLeitura.ModuloAmigo;
 using ClubeDaLeitura.ModuloRevista;
+using ClubeDaLeitura.ConsoleApp1.Compartilhada;
 
 namespace ClubeDaLeitura.ModuloEmprestimo
 {
-    public class Emprestimo : ClubeDaLeitura.ConsoleApp1.Compartilhada.EntidadeBase
+    public class Emprestimo : EntidadeBase
     {
         public Amigo Amigo { get; set; }
         public Revista Revista { get; set; }

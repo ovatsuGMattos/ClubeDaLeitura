@@ -1,6 +1,7 @@
-﻿namespace ClubeDaLeitura.ModuloCaixa
+﻿using ClubeDaLeitura.ConsoleApp1.Compartilhada;
+namespace ClubeDaLeitura.ModuloCaixa
 {
-    public class Caixa : ClubeDaLeitura.ConsoleApp1.Compartilhada.EntidadeBase
+    public class Caixa : EntidadeBase
     {
         public string Etiqueta { get; set; }
         public string Cor { get; set; }

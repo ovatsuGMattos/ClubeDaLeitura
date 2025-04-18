@@ -7,6 +7,7 @@ namespace ClubeDaLeitura.ModuloAmigo
         public string Nome { get; set; }
         public string NomeResponsavel { get; set; }
         public string Telefone { get; set; }
+        public bool TemMulta { get; internal set; }
 
         public Amigo(string nome, string nomeResponsavel, string telefone)
         {
